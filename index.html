@@ -176,6 +176,23 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
 
 <div id="modal" class="hidden"><div class="panel" id="modalBody"></div></div>
 <div id="toast"></div>
-<script src="app.js"></script>
+<div id="gate" style="display:none;position:fixed;inset:0;z-index:99;background:#090b10;color:#f3efe6;font-family:system-ui,sans-serif;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px;gap:14px">
+<div style="font-size:64px;color:#e2c275">&#9822;</div>
+<h1 style="margin:0;font:400 26px Georgia,serif;color:#e2c275;letter-spacing:.08em">GrandMaster4KChess</h1>
+<p style="margin:0;max-width:340px;line-height:1.5;color:#c9c3b6">Bu oyun Google Play'de sat&#305;lmaktad&#305;r. Oynamak i&ccedil;in uygulamay&#305; Google Play'den edinin ve oradan a&ccedil;&#305;n.<br><br>This game is sold on Google Play. Please get the app there and open it from your device.</p>
+<a href="https://play.google.com/store/apps/details?id=com.bead.chess4k" style="margin-top:8px;padding:13px 22px;border-radius:13px;background:linear-gradient(180deg,#e9cd86,#b8924a);color:#1a1307;font-weight:700;text-decoration:none">Google Play'de a&ccedil;</a>
+</div>
+<script>
+(function(){
+  var PKG='com.bead.chess4k',KEY='sat3d.lic',ok=false;
+  try{ok=localStorage.getItem(KEY)==='1';}catch(e){}
+  if(!ok&&(document.referrer||'').indexOf('android-app://'+PKG)===0){ok=true;try{localStorage.setItem(KEY,'1');}catch(e){}}
+  if(location.hostname==='localhost')ok=true;
+  if(ok){var s=document.createElement('script');s.src='app.js';document.body.appendChild(s);return;}
+  var b=document.getElementById('boot');if(b)b.style.display='none';
+  var h=document.querySelectorAll('.screen,#hud,canvas');for(var i=0;i<h.length;i++)h[i].style.display='none';
+  document.getElementById('gate').style.display='flex';
+})();
+</script>
 </body>
 </html>
