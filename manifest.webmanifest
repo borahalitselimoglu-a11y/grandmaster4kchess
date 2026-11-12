@@ -1,0 +1,20 @@
+{
+  "id": "satranc3d",
+  "name": "Satranç 3D",
+  "short_name": "Satranç 3D",
+  "description": "Gerçekçi 3B satranç: 5 zorluk seviyesi, aynı cihazda ve online iki oyunculu mod, 4 tahta ve 4 taş takımı.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#090b10",
+  "theme_color": "#090b10",
+  "categories": ["games"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
