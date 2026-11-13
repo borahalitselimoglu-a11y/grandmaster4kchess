@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -7,12 +7,13 @@
 <meta name="theme-color" content="#090b10">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>Satranç 3D</title>
+<title>GrandMaster4KChess</title>
 <style>
 :root{--gold:#e2c275;--gold2:#b8924a;--ink:#f3efe6;--dim:#a9a396;--panel:rgba(16,18,24,.82);--line:rgba(226,194,117,.28);--ok:#4be07a;--bad:#ff6b5a}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 html,body{margin:0;height:100%;background:#090b10;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;overscroll-behavior:none}
 canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+canvas#c2d{position:fixed;display:none;z-index:4;touch-action:none;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 .hidden{display:none!important}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 #boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#090b10;z-index:50;gap:14px;transition:opacity .5s}
@@ -85,7 +86,8 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="boot"><div class="k">♞</div><p>SATRANÇ 3D</p></div>
+<canvas id="c2d"></canvas>
+<div id="boot"><div class="k">♞</div><p>GRANDMASTER 4K CHESS</p></div>
 
 <div id="hud" class="hidden">
   <div class="pl" id="plTop"><div class="dot"></div><div><div class="nm"></div><div class="st"></div></div><div class="caps"></div></div>
@@ -93,84 +95,90 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
     <div id="status"></div>
     <div class="pl" id="plBot"><div class="dot"></div><div><div class="nm"></div><div class="st"></div></div><div class="caps"></div></div>
     <div class="tools">
-      <button class="tool" id="tMenu">☰<span>Menü</span></button>
-      <button class="tool" id="tUndo">↶<span>Geri Al</span></button>
-      <button class="tool" id="tHint">💡<span>İpucu</span></button>
-      <button class="tool" id="tFlip">⟲<span>Çevir</span></button>
-      <button class="tool" id="tLook">🎨<span>Görünüm</span></button>
+      <button class="tool" id="tMenu">☰<span data-i18n="tMenu"></span></button>
+      <button class="tool" id="tUndo">↶<span data-i18n="tUndo"></span></button>
+      <button class="tool" id="tHint">💡<span data-i18n="tHint"></span></button>
+      <button class="tool" id="tFlip">⟲<span data-i18n="tFlip"></span></button>
+      <button class="tool" id="tLook">🎨<span data-i18n="tLook"></span></button>
     </div>
   </div>
 </div>
 
 <section class="screen" id="sMenu">
-  <div class="title"><h1>SATRANÇ</h1><p>Üç Boyutlu · Gerçekçi</p></div>
+  <div class="title"><h1 data-i18n="title"></h1><p data-i18n="subtitle"></p></div>
   <div class="panel">
-    <button class="btn hidden" id="mResume"><span class="ic">▶</span><span>Devam Et<small id="mResumeInfo"></small></span></button>
-    <button class="btn" data-go="sAi"><span class="ic">♛</span><span>Bilgisayara Karşı<small>5 zorluk seviyesi</small></span></button>
-    <button class="btn" id="mLocal"><span class="ic">♟</span><span>İki Oyuncu<small>Aynı cihazda karşılıklı</small></span></button>
-    <button class="btn" data-go="sOnline"><span class="ic">🌐</span><span>Online Oyun<small>Oda koduyla arkadaşınla oyna</small></span></button>
-    <button class="btn" data-go="sLook"><span class="ic">🎨</span><span>Görünüm ve Ayarlar<small>Tahta, taş takımı, grafik</small></span></button>
+    <button class="btn hidden" id="mResume"><span class="ic">▶</span><span><span data-i18n="resume"></span><small id="mResumeInfo"></small></span></button>
+    <button class="btn" data-go="sAi"><span class="ic">♛</span><span><span data-i18n="vsAi"></span><small data-i18n="vsAiSub"></small></span></button>
+    <button class="btn" id="mLocal"><span class="ic">♟</span><span><span data-i18n="local"></span><small data-i18n="localSub"></small></span></button>
+    <button class="btn" data-go="sOnline"><span class="ic">🌐</span><span><span data-i18n="online"></span><small data-i18n="onlineSub"></small></span></button>
+    <button class="btn" data-go="sLook"><span class="ic">🎨</span><span><span data-i18n="look"></span><small data-i18n="lookSub"></small></span></button>
+    <div class="opts c3 langs" id="menuLang" style="margin-top:12px"></div>
   </div>
 </section>
 
 <section class="screen hidden" id="sAi">
   <div class="panel">
-    <h2><button class="back" data-go="sMenu">‹</button>Bilgisayara Karşı</h2>
-    <h3>Zorluk</h3>
+    <h2><button class="back" data-go="sMenu">‹</button><span data-i18n="vsAi"></span></h2>
+    <h3 data-i18n="difficulty"></h3>
     <div class="opts c5" id="aiLevels"></div>
     <p class="hint" id="aiLevelDesc"></p>
-    <h3>Rengin</h3>
+    <h3 data-i18n="yourColor"></h3>
     <div class="opts c3" id="aiColor">
-      <button class="opt" data-v="w">⚪ Beyaz</button><button class="opt" data-v="r">🎲 Rastgele</button><button class="opt" data-v="b">⚫ Siyah</button>
+      <button class="opt" data-v="w">⚪ <span data-i18n="white"></span></button><button class="opt" data-v="r">🎲 <span data-i18n="random"></span></button><button class="opt" data-v="b">⚫ <span data-i18n="black"></span></button>
     </div>
-    <button class="btn primary" id="aiStart">Oyunu Başlat</button>
+    <button class="btn primary" id="aiStart" data-i18n="start"></button>
   </div>
 </section>
 
 <section class="screen hidden" id="sOnline">
   <div class="panel">
-    <h2><button class="back" data-go="sMenu">‹</button>Online Oyun</h2>
-    <h3>Oda kur — rengin</h3>
+    <h2><button class="back" data-go="sMenu">‹</button><span data-i18n="online"></span></h2>
+    <h3 data-i18n="createRoom"></h3>
     <div class="opts c3" id="onColor">
-      <button class="opt" data-v="w">⚪ Beyaz</button><button class="opt" data-v="r">🎲 Rastgele</button><button class="opt" data-v="b">⚫ Siyah</button>
+      <button class="opt" data-v="w">⚪ <span data-i18n="white"></span></button><button class="opt" data-v="r">🎲 <span data-i18n="random"></span></button><button class="opt" data-v="b">⚫ <span data-i18n="black"></span></button>
     </div>
-    <button class="btn primary" id="onHost">Oda Kur</button>
-    <h3>Ya da odaya katıl</h3>
-    <input class="codein" id="onCode" maxlength="6" placeholder="KOD" autocomplete="off" autocapitalize="characters" spellcheck="false">
-    <button class="btn" id="onJoin" style="justify-content:center">Odaya Katıl</button>
-    <p class="hint">İnternet bağlantısı gerekir. Oda kodunu arkadaşına gönder; o da bu ekrandan katılsın.</p>
+    <button class="btn primary" id="onHost" data-i18n="host"></button>
+    <h3 data-i18n="orJoin"></h3>
+    <input class="codein" id="onCode" maxlength="6" data-i18n-ph="codePh" autocomplete="off" autocapitalize="characters" spellcheck="false">
+    <button class="btn" id="onJoin" style="justify-content:center" data-i18n="join"></button>
+    <p class="hint" data-i18n="onlineHint"></p>
   </div>
 </section>
 
 <section class="screen hidden" id="sLobby">
   <div class="panel" style="text-align:center">
-    <h2 style="justify-content:center" id="lobbyTitle">Oda Kuruluyor…</h2>
+    <h2 style="justify-content:center" id="lobbyTitle"></h2>
     <div class="code hidden" id="lobbyCode"></div>
     <p class="hint" id="lobbyInfo" style="text-align:center"></p>
-    <button class="btn hidden" id="lobbyCopy" style="justify-content:center">Kodu Kopyala</button>
-    <button class="btn ghost" id="lobbyCancel">Vazgeç</button>
+    <button class="btn hidden" id="lobbyCopy" style="justify-content:center" data-i18n="copy"></button>
+    <button class="btn ghost" id="lobbyCancel" data-i18n="cancel"></button>
   </div>
 </section>
 
 <section class="screen hidden" id="sLook">
   <div class="panel">
-    <h2><button class="back" id="lookBack">‹</button>Görünüm</h2>
-    <h3>Tahta</h3><div class="opts c2" id="lkBoards"></div>
-    <h3>Taş takımı</h3><div class="opts c2" id="lkSets"></div>
-    <h3>Ayarlar</h3>
-    <div class="row"><span>Ultra grafik (4K'ya kadar)</span><button class="tog" id="setQuality"></button></div>
-    <div class="row"><span>Ses efektleri</span><button class="tog" id="setSound"></button></div>
-    <div class="row"><span>İki oyuncuda tahtayı sıraya göre çevir</span><button class="tog" id="setFlip"></button></div>
+    <h2><button class="back" id="lookBack">‹</button><span data-i18n="lookTitle"></span></h2>
+    <h3 data-i18n="view"></h3>
+    <div class="opts c2" id="lkView">
+      <button class="opt" data-v="3d" data-i18n="view3d"></button><button class="opt" data-v="2d" data-i18n="view2d"></button>
+    </div>
+    <h3 data-i18n="board"></h3><div class="opts c2" id="lkBoards"></div>
+    <h3 data-i18n="pieces"></h3><div class="opts c2" id="lkSets"></div>
+    <h3 data-i18n="language"></h3><div class="opts c3 langs" id="lkLang"></div>
+    <h3 data-i18n="settings"></h3>
+    <div class="row"><span data-i18n="ultra"></span><button class="tog" id="setQuality"></button></div>
+    <div class="row"><span data-i18n="sound"></span><button class="tog" id="setSound"></button></div>
+    <div class="row"><span data-i18n="autoflip"></span><button class="tog" id="setFlip"></button></div>
   </div>
 </section>
 
 <section class="screen hidden" id="sPause">
   <div class="panel">
-    <h2>Oyun Menüsü</h2>
-    <button class="btn primary" id="pResume">Oyuna Dön</button>
-    <button class="btn" id="pRestart" style="justify-content:center">Yeniden Başlat</button>
-    <button class="btn" id="pResign" style="justify-content:center">Terk Et</button>
-    <button class="btn ghost" id="pQuit">Ana Menü</button>
+    <h2 data-i18n="pauseTitle"></h2>
+    <button class="btn primary" id="pResume" data-i18n="backToGame"></button>
+    <button class="btn" id="pRestart" style="justify-content:center" data-i18n="restart"></button>
+    <button class="btn" id="pResign" style="justify-content:center" data-i18n="resign"></button>
+    <button class="btn ghost" id="pQuit" data-i18n="mainMenu"></button>
   </div>
 </section>
 
@@ -179,8 +187,8 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
 <div id="gate" style="display:none;position:fixed;inset:0;z-index:99;background:#090b10;color:#f3efe6;font-family:system-ui,sans-serif;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px;gap:14px">
 <div style="font-size:64px;color:#e2c275">&#9822;</div>
 <h1 style="margin:0;font:400 26px Georgia,serif;color:#e2c275;letter-spacing:.08em">GrandMaster4KChess</h1>
-<p style="margin:0;max-width:340px;line-height:1.5;color:#c9c3b6">Bu oyun Google Play'de sat&#305;lmaktad&#305;r. Oynamak i&ccedil;in uygulamay&#305; Google Play'den edinin ve oradan a&ccedil;&#305;n.<br><br>This game is sold on Google Play. Please get the app there and open it from your device.</p>
-<a href="https://play.google.com/store/apps/details?id=com.bead.chess4k" style="margin-top:8px;padding:13px 22px;border-radius:13px;background:linear-gradient(180deg,#e9cd86,#b8924a);color:#1a1307;font-weight:700;text-decoration:none">Google Play'de a&ccedil;</a>
+<p style="margin:0;max-width:340px;line-height:1.5;color:#c9c3b6">Bu oyun Google Play'de sat&#305;lmaktad&#305;r. Oynamak i&ccedil;in uygulamay&#305; Google Play'den edinin ve oradan a&ccedil;&#305;n.<br><br>This game is sold on Google Play. Please get the app there and open it from your device.<br><br>Este juego se vende en Google Play. Cons&iacute;guelo all&iacute; y &aacute;brelo desde tu dispositivo.</p>
+<a href="https://play.google.com/store/apps/details?id=com.bead.chess4k" style="margin-top:8px;padding:13px 22px;border-radius:13px;background:linear-gradient(180deg,#e9cd86,#b8924a);color:#1a1307;font-weight:700;text-decoration:none">Google Play</a>
 </div>
 <script>
 (function(){

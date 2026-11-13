@@ -1,5 +1,5 @@
 // Offline support: everything the game needs is cached on first visit.
-const CACHE = 'satranc3d-5a0f97a686';
+const CACHE = 'satranc3d-7d642c7800';
 const FILES = ['./', 'index.html', 'app.js', 'stockfish-19-lite-single.js', 'stockfish-19-lite-single.wasm',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png'];
 
