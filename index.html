@@ -47,6 +47,20 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
 .tog{width:48px;height:28px;border-radius:14px;background:rgba(255,255,255,.14);position:relative;flex:none;transition:background .2s}
 .tog::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
 .tog.on{background:var(--gold2)}.tog.on::after{transform:translateX(20px)}
+.list{display:grid;gap:7px}
+.item{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);text-align:left;font-size:15px}
+.item:active{background:rgba(226,194,117,.14)}
+.item b{flex:none;width:24px;height:24px;border-radius:50%;background:rgba(226,194,117,.16);color:var(--gold);font-size:12px;display:flex;align-items:center;justify-content:center}
+#sLesson{background:linear-gradient(180deg,rgba(9,11,16,0) 50%,rgba(9,11,16,.85) 80%)}
+.lesson{max-height:46vh}
+.lesson h2{font-size:18px;margin-bottom:8px}
+.lesson p{margin:0 0 10px;font-size:14.5px;line-height:1.5;color:#ddd7ca}
+.lesson .moves{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--dim);line-height:1.7}
+.lesson .moves b{color:#1a1307;background:var(--gold);border-radius:4px;padding:1px 4px}
+.nav{display:flex;align-items:center;gap:10px}
+.nav .btn{margin:0;padding:11px 10px;justify-content:center;text-align:center;font-size:15px;flex:1}
+.nav .btn:disabled{opacity:.35}
+.nav span{color:var(--dim);font-size:13px;min-width:44px;text-align:center}
 /* HUD */
 #hud{position:fixed;inset:0;pointer-events:none;z-index:5;display:flex;flex-direction:column;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom))}
 #hud>*{pointer-events:auto}
@@ -78,6 +92,8 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
   .screen{align-items:flex-end;justify-content:center;background:linear-gradient(90deg,rgba(9,11,16,0) 40%,rgba(9,11,16,.85) 80%)}
   .title{right:auto;left:5vw;text-align:left;top:8vh}
   .panel{max-width:380px;max-height:92vh}
+  .lesson{max-height:92vh}
+  #sLesson{background:none}
   #hud{flex-direction:row;align-items:flex-start}
   #hud>.pl,#bottomWrap{width:270px}
   #bottomWrap{align-self:flex-end}
@@ -111,6 +127,7 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
     <button class="btn" data-go="sAi"><span class="ic">♛</span><span><span data-i18n="vsAi"></span><small data-i18n="vsAiSub"></small></span></button>
     <button class="btn" id="mLocal"><span class="ic">♟</span><span><span data-i18n="local"></span><small data-i18n="localSub"></small></span></button>
     <button class="btn" data-go="sOnline"><span class="ic">🌐</span><span><span data-i18n="online"></span><small data-i18n="onlineSub"></small></span></button>
+    <button class="btn" data-go="sLearn"><span class="ic">📖</span><span><span data-i18n="learn"></span><small data-i18n="learnSub"></small></span></button>
     <button class="btn" data-go="sLook"><span class="ic">🎨</span><span><span data-i18n="look"></span><small data-i18n="lookSub"></small></span></button>
     <div class="opts c3 langs" id="menuLang" style="margin-top:12px"></div>
   </div>
@@ -169,6 +186,23 @@ input.codein{width:100%;padding:13px;border-radius:12px;border:1px solid var(--l
     <div class="row"><span data-i18n="ultra"></span><button class="tog" id="setQuality"></button></div>
     <div class="row"><span data-i18n="sound"></span><button class="tog" id="setSound"></button></div>
     <div class="row"><span data-i18n="autoflip"></span><button class="tog" id="setFlip"></button></div>
+  </div>
+</section>
+
+<section class="screen hidden" id="sLearn">
+  <div class="panel">
+    <h2><button class="back" data-go="sMenu">‹</button><span data-i18n="learn"></span></h2>
+    <h3 data-i18n="basics"></h3><div class="list" id="lnBasics"></div>
+    <h3 data-i18n="openings"></h3><div class="list" id="lnOpenings"></div>
+  </div>
+</section>
+
+<section class="screen hidden" id="sLesson">
+  <div class="panel lesson">
+    <h2><button class="back" id="lsBack">‹</button><span id="lsTitle"></span></h2>
+    <p id="lsMoves" class="moves hidden"></p>
+    <p id="lsText"></p>
+    <div class="nav"><button class="btn" id="lsPrev" data-i18n="prev"></button><span id="lsCount"></span><button class="btn primary" id="lsNext"></button></div>
   </div>
 </section>
 
